@@ -7,6 +7,8 @@
 Hold a phone near the on-board NFC antenna, and the board harvests power from the RF field. An STM32G031 drives a passive buzzer through PWM to play a melody, while an on-board NTAG I²C plus provides an NDEF area the phone can read and write. No battery is required.
 
 > This repository is a complete reference design: PCB antenna, Gerber, EasyEDA project, KiCad coil footprint, STM32 firmware and a melody-extraction workflow.
+>
+> Styled Chinese documentation: [GitHub Pages](https://cabbagedog8266.github.io/OpenNFC-MusicBox/)
 
 ## Features
 
@@ -27,7 +29,7 @@ Hold a phone near the on-board NFC antenna, and the board harvests power from th
 | `hardware/nfc-music-box_v2026-10-19.epro2` | EasyEDA Pro project |
 | `hardware/kicad-coil/` | KiCad coil symbol / footprint / BOM (48 × 75 mm, N3) |
 | `demo/` | Example MIDI and melody TXT |
-| `docs/README.html` | Styled Chinese documentation (open offline) |
+| `docs/index.html` | Styled Chinese documentation ([GitHub Pages](https://cabbagedog8266.github.io/OpenNFC-MusicBox/)) |
 
 ## Hardware
 

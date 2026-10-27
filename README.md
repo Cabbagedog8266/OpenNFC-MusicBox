@@ -7,6 +7,8 @@
 手机靠近板载 NFC 天线，芯片从射频场取电，STM32G031 通过 PWM 驱动无源蜂鸣器播放旋律；板载 NTAG I²C plus 同时提供手机可读写的 NDEF 区。整块板不需要电池。
 
 > 本项目是硬件 + 固件的完整参考设计：PCB 天线、Gerber、EasyEDA 工程、KiCad 线圈封装、STM32 固件和配套的旋律提取流程都在仓库里。
+>
+> 排版版中文说明：[GitHub Pages](https://cabbagedog8266.github.io/OpenNFC-MusicBox/)
 
 ## 特性
 
@@ -27,7 +29,7 @@
 | `hardware/nfc-music-box_v2026-10-19.epro2` | 立创 EDA 专业版工程 |
 | `hardware/kicad-coil/` | KiCad 线圈符号 / 封装 / BOM（48×75 mm，N3） |
 | `demo/` | 示例 MIDI 与旋律 TXT |
-| `docs/README.html` | 排版版中文说明（离线打开） |
+| `docs/index.html` | 排版版中文说明（[GitHub Pages 在线版](https://cabbagedog8266.github.io/OpenNFC-MusicBox/)） |
 
 ## 硬件
 
