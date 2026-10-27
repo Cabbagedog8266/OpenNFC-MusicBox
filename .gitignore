@@ -1,0 +1,15 @@
+# Build output
+firmware/build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.d
+
+# IDE / OS
+firmware/.idea/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFC 音乐盒 · 项目说明</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #1f2430;
+    --muted: #667085;
+    --border: #e7eaf1;
+    --accent: #6366f1;
+    --accent-2: #8b5cf6;
+    --blue: #2563eb;
+    --blue-bg: #eff4ff;
+    --green: #16a34a;
+    --green-bg: #ecfdf3;
+    --amber: #b45309;
+    --amber-bg: #fffbeb;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 22px 72px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 55%, #a855f7 100%);
+    color: #fff;
+    text-align: center;
+    padding: 76px 24px 68px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,.20), transparent 42%),
+      radial-gradient(circle at 84% 78%, rgba(255,255,255,.14), transparent 45%);
+  }
+  .hero .emoji { font-size: 56px; line-height: 1; position: relative; z-index: 1; }
+  .hero h1 { font-size: 42px; margin: 12px 0 6px; position: relative; z-index: 1; letter-spacing: 2px; }
+  .hero .subtitle { font-size: 18px; margin: 0 0 22px; position: relative; z-index: 1; opacity: .96; }
+  .tags { position: relative; z-index: 1; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .tag {
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.32);
+    padding: 5px 15px; border-radius: 999px;
+    font-size: 13px; letter-spacing: .5px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+
+  /* ===== Nav ===== */
+  .nav {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin: 28px 0 0;
+  }
+  .nav a {
+    text-decoration: none; color: var(--text);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 9px 18px; border-radius: 999px; font-size: 14px;
+    box-shadow: 0 1px 2px rgba(15,23,42,.05);
+    transition: .18s;
+  }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  /* ===== Sections / cards ===== */
+  section { margin-top: 30px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 30px 32px;
+    box-shadow: 0 1px 3px rgba(15,23,42,.05);
+  }
+  .section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+  .section-head .icon {
+    width: 46px; height: 46px; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; border-radius: 12px;
+    background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+  }
+  .section-head h2 { font-size: 23px; margin: 0; }
+  .section-head .en { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  h3 { font-size: 16.5px; margin: 26px 0 8px; display: flex; align-items: center; gap: 8px; }
+  h3 .step {
+    width: 24px; height: 24px; flex: 0 0 auto;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--accent); color: #fff; border-radius: 7px;
+    font-size: 13px; font-weight: 600;
+  }
+  p { margin: 8px 0; }
+  code {
+    background: #eef0f6; color: #4f46e5;
+    padding: 1px 7px; border-radius: 6px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: .92em;
+  }
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-2); }
+
+  /* ===== Tables ===== */
+  .table-wrap { overflow-x: auto; margin: 14px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: #f8fafc; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  tbody tr:hover { background: #fafbff; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== Callouts ===== */
+  .callout {
+    margin: 16px 0 4px; padding: 14px 18px 14px 16px;
+    border-radius: 12px; border: 1px solid; border-left-width: 5px;
+    font-size: 15px;
+  }
+  .callout .c-title { font-weight: 700; display: block; margin-bottom: 2px; }
+  .callout.important { background: var(--red-bg); border-color: #fecaca; border-left-color: var(--red); }
+  .callout.important .c-title { color: var(--red); }
+  .callout.warning { background: var(--amber-bg); border-color: #fde68a; border-left-color: var(--amber); }
+  .callout.warning .c-title { color: var(--amber); }
+  .callout.tip { background: var(--green-bg); border-color: #bbf7d0; border-left-color: var(--green); }
+  .callout.tip .c-title { color: var(--green); }
+  .callout.info { background: var(--blue-bg); border-color: #bfdbfe; border-left-color: var(--blue); }
+  .callout.info .c-title { color: var(--blue); }
+
+  /* ===== Lists ===== */
+  ul.checklist { list-style: none; padding-left: 4px; margin: 12px 0; }
+  ul.checklist li { padding: 5px 0 5px 26px; position: relative; }
+  ul.checklist li::before { content: ""; position: absolute; left: 0; top: 13px; width: 12px; height: 12px; border-radius: 4px; background: #c7d2fe; }
+  ul.checklist li.done::before { background: var(--green); }
+  ul.checklist li.warn::before { background: #fbbf24; }
+
+  /* ===== Footer ===== */
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 44px; }
+  footer .heart { color: var(--red); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 56px 20px 52px; }
+    .hero h1 { font-size: 30px; }
+    .card { padding: 22px 18px; }
+    .section-head h2 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="emoji">🎵</div>
+    <h1>NFC 音乐盒</h1>
+    <p class="subtitle">PCB 天线设计 · Ntag 读写 · 音频转换指南</p>
+    <div class="tags">
+      <span class="tag">STM32G0</span>
+      <span class="tag">NFC</span>
+      <span class="tag">蜂鸣器旋律播放</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="nav">
+      <a href="#structure">📂 目录结构</a>
+      <a href="#antenna">📡 PCB 天线设计</a>
+      <a href="#ntag">🏷️ Ntag 读写</a>
+      <a href="#audio">🎼 音频转换指南</a>
+      <a href="../README.en.md">🌐 English</a>
+    </div>
+
+    <!-- ===== 目录结构 ===== -->
+    <section id="structure">
+      <div class="card">
+        <div class="section-head">
+          <div class="icon">📂</div>
+          <div>
+            <div class="en">Directory</div>
+            <h2>目录结构</h2>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>路径</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>firmware/</code></td><td>STM32 固件工程（CMake + STM32CubeMX）</td></tr>
+              <tr><td><code>hardware/</code></td><td>PCB、Gerber、立创 EDA 工程、KiCad 线圈封装</td></tr>
+              <tr><td><code>demo/</code></td><td>示例 MIDI 与旋律 TXT（版权音频未包含）</td></tr>
+              <tr><td><code>MelodyExtractor_Setup_v1.0.0.exe</code></td><td>旋律提取工具安装包（<a href="https://github.com/Cabbagedog8266/OpenNFC-MusicBox/releases" target="_blank">Release 附件</a>）</td></tr>
+              <tr><td><code>NXP TagWriter</code></td><td>官方 Android 应用（<a href="https://play.google.com/store/apps/details?id=com.nxp.nfc.tagwriter" target="_blank">Google Play</a>，仓库不附带 APK）</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PCB 天线设计 ===== -->
+    <section id="antenna">
+      <div class="card">
+        <div class="section-head">
+          <div class="icon">📡</div>
+          <div>
+            <div class="en">Antenna</div>
+            <h2>一、PCB 天线设计</h2>
+          </div>
+        </div>
+
+        <h3><span class="step">1</span>自定义天线设计</h3>
+        <p>板上预留了 <code>R0</code> 位置，方便你设计符合自身需求的 PCB 天线：只需把 <code>R0</code> 的封装替换成自己的天线设计即可。</p>
+        <div class="callout important">
+          <span class="c-title">⚠️ 注意</span>
+          这一步会产生<strong>可忽略的 DRC 报错</strong>，属正常现象，无需处理。
+        </div>
+
+        <h3><span class="step">2</span>Pro Antenna Designer 线圈设计</h3>
+        <p>用 Pro Antenna Designer 设计的线圈默认使用<strong>插件焊盘</strong>，同样会带来<strong>可忽略的 DRC 报错</strong>。</p>
+
+        <h3><span class="step">3</span>谐振校准说明</h3>
+        <ul class="checklist">
+          <li class="done">谐振状态的微小偏差对性能影响约 <strong>0.05 dB</strong>，可忽略不计。</li>
+          <li class="done">无专业测试仪器时，可直接使用 Designer 给出的 <strong>LC 匹配规格参数</strong>。</li>
+          <li class="warn">为保证带宽与能量，建议 <strong>Q 值 ≈ 20，且不要超过 20</strong>。</li>
+        </ul>
+
+        <h3><span class="step">4</span>布局注意事项</h3>
+        <p>线圈外围 <strong>5 mm</strong> 范围内（含上下两面）请避免放置焊盘或其他金属走线，以免影响天线性能。</p>
+        <div class="callout warning">
+          <span class="c-title">⚠️ 重要</span>
+          天线周围务必保持净空，金属会显著劣化天线性能。
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Ntag 读写 ===== -->
+    <section id="ntag">
+      <div class="card">
+        <div class="section-head">
+          <div class="icon">🏷️</div>
+          <div>
+            <div class="en">Ntag</div>
+            <h2>二、Ntag 读写</h2>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>操作</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>📱 读写</td><td>使用 <strong>NXP 官方 TagWriter</strong>：<a href="https://play.google.com/store/apps/details?id=com.nxp.nfc.tagwriter" target="_blank">Google Play</a>（仓库不附带 APK）</td></tr>
+              <tr><td>🧹 首次写入</td><td><strong>首次写入数据集时，需要先擦除标签并格式化为 NDEF</strong>，然后再写入数据</td></tr>
+              <tr><td>🔒 防误操作</td><td>项目<strong>每次烧录时都会通过 I2C 重置 Ntag 的只读（锁）状态</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 音频转换指南 ===== -->
+    <section id="audio">
+      <div class="card">
+        <div class="section-head">
+          <div class="icon">🎼</div>
+          <div>
+            <div class="en">Audio</div>
+            <h2>三、音频文件转换指南</h2>
+          </div>
+        </div>
+        <p style="margin-top:12px;">按你手头已有的素材，选一种方式：</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>情况</th><th>做法</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1️⃣ 已有乐谱</td>
+                <td>编辑 <code>code/Core/Src/music_data.c</code> 的旋律数组，并同步修改 <code>code/Core/Inc/music_data.h</code> 的 <code>MUSIC_LEN</code></td>
+              </tr>
+              <tr>
+                <td>2️⃣ 有单音轨 MIDI、无旋律 txt</td>
+                <td>用 <a href="http://prts.online/" target="_blank">prts.online</a> 提取旋律，选「保留最高音」；网站还提供 <strong>Viterbi 解码</strong>与 <strong>YIN 自相关</strong>算法</td>
+              </tr>
+              <tr>
+                <td>3️⃣ 什么都没有</td>
+                <td>安装 <code>MelodyExtractor_Setup_v1.0.0.exe</code> 提取旋律后手动编辑；源码见 <a href="https://github.com/Cabbagedog8266/melody-extractor" target="_blank">GitHub</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <span class="c-title">💡 旋律数据格式</span>
+          <code>music_score[]</code> 里每项是一个音符 <code>{频率, 时长}</code>，单位 <code>{Hz, ms}</code>；频率填 <code>0</code> 表示休止符。改完记得把 <code>music_data.h</code> 里的 <code>MUSIC_LEN</code> 改成数组实际长度。
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Made with <span class="heart">❤</span> · STM32G0 NFC Melody Player
+    </footer>
+
+  </div>
+</body>
+</html>

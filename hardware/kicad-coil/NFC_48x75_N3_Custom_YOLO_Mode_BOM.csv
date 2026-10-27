@@ -1,0 +1,9 @@
+Designator,Value,Package,Description,LCSC Part#,Quantity
+ANT1,13.56MHz NFC,PCB,NFC Antenna 3 turns,-,1
+Rq,4.7 Ohm,0402,Damping Resistor 1% 1/16W,C863140,2
+Cp_a,47 pF,0402,Parallel Tuning Capacitor C0G 50V (parallel pair with Cp_b),C277503,2
+Cp_b,39 pF,0402,Parallel Tuning Capacitor C0G 50V (parallel pair with Cp_a),C541413,2
+Cs_a,27 pF,0402,Series Matching Capacitor C0G 50V (parallel pair with Cs_b),C277506,2
+Cs_b,15 pF,0402,Series Matching Capacitor C0G 50V (parallel pair with Cs_a),C326803,2
+Lemc,330 nH,0603,EMC Filter Inductor wirewound 5% - one per TX pin (served BOM L2/L3),C6652922,2
+Cemc,330 pF,0402,EMC Filter Capacitor C0G 50V 2% - one per TX pin (served BOM C3/C4),C237507,2
